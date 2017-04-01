@@ -1,316 +1,63 @@
-<!DOCTYPE = html>
-<html lang = "en">
+<!DOCTYPE html>
+<html>
 <head>
-  <title>Hackathon 2017 ZAX</title>
-  <meta charset="utf-8">
-  <meta name = "viewport" content="width= device-width , initial-scale = 1 ">
-  <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
-  <link rel = "icon" href = "http://www.metalinjection.net/wp-content/uploads/2014/06/Soviet-Sickle.png">
-  <!-- Latest compiled and minified CSS-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-
-<!--Stanley's css file-->
-<style>
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
-a{text-decoration: none;}
-
-h1{
-  text-align: center;
-}
-
-body{
-  text-align: center;
-  font-family: "Press Start 2P";
-  background: url('https://www.aum.edu.mm/wp-content/uploads/2016/02/bagan-pagoda.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-button{
-  font-family: "Press Start 2P";
-  background-color: red;
-  border: none;
-  cursor: pointer;
-  margin: .5%
-}
-button:hover{
-  background-color: gold;
-}
-.timer{
-  margin: 20%;
-}
-
-footer{
-  color: white;
-}
-.hideDiv{
-  display: none;
-}
-</style>
-
-<!-- Kevin's Dooms styles -->
-<style>
-.displayBox {
-  background-color: rgb(210, 224, 219);
-  margin: 2%;
-  padding: 1%;
-  cursor: pointer;
-  border-style: 4px solid transparent;
-  border-radius: 4px;
-  /* to make boxes grow on hover */
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  -ms-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: transform;
-  -moz-transition-property: transform;
-  -ms-transition-property: transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-}
-.displayBox p {
-  color: rgb(86, 129, 140);
-}
-.displayBox:hover,
-.displayBox:active,
-.displayBox:focus {
-  -webkit-transform: scale(1.04);
-  -moz-transform: scale(1.04);
-  -ms-transform: scale(1.04);
-  -o-transform: scale(1.04);
-  transform: scale(1.04);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.fadeInUp {
-  animation-duration: 1s;
-  animation-name: fadeInUp;
-}
-
-</style>
-
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
 </head>
+<body>
 
-<body onload = "setInterval( timer, 1000)" >
-  <div class = "timer">
-    <h1 id = "doomsday">Renewable Energy</h1>
-    <p id = "timer" > </p>
-    <p>
-      Y:M:D:H:M:S
-    </p>
+<style>
+    #menu {
+        position: absolute;
+        background: #fff;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+    }
+</style>
 
-    <p id="watSon">Where can we best build microgrids?</p>
-
-    <div id="getADrink"></div>
-    <div id="hideDivBtn" class="hideDiv" data-bttnio-id="btn-7426e86f09c74bf5" data-bttnio-context='{ "user_location": { "latitude": 37.7749, "longitude": 122.4194 } }'></div>
-
-    <div id="dataDivHead"></div>
-    <button id="doomBtn">Ask our AI</button>
-
-    <div id="dataDiv"></div>
-
-  </div>
-
-
-<footer>Built by Team ZaxUnlmtd | Powered by IBM Watson | Button | New York Times API | Wikipedia API | Background CC License Wikipedia</footer>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<!-- <script src = "timer.js"> </script> -->
+<div id='map'></div>
+<div id='menu'>
+    <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+    <label for='basic'>basic</label>
+    <input id='streets' type='radio' name='rtoggle' value='streets'>
+    <label for='streets'>streets</label>
+    <input id='bright' type='radio' name='rtoggle' value='bright'>
+    <label for='bright'>bright</label>
+    <input id='light' type='radio' name='rtoggle' value='light'>
+    <label for='light'>light</label>
+    <input id='dark' type='radio' name='rtoggle' value='dark'>
+    <label for='dark'>dark</label>
+    <input id='satellite' type='radio' name='rtoggle' value='satellite'>
+    <label for='satellite'>satellite</label>
+</div>
 <script>
-var minutes = 60;
-var months = 12;
-var hours = 24;
-var days = 30;
-var seconds = 60;
-var dead = 10;
-var deathBed = 9;
-var bleeding = 8;
-var cut = 7;
-var aboutToBeStabbed  = 6;
-var guyConfrontingYou = 5;
-var walkingAlong = 4;
-var leftTheHouse = 3;
-var gettingReady = 2;
-var justWokeUp = 1;
-var years;
-var data = {{result}}; // change back for live
-//var data = 10; // for testing
-switch(data){
-  case(dead):
-    years = 0;
-    break;
-  case(deathBed):
-    years  = 1;
-    break;
-  case(bleeding):
-    years = 5;
-    break;
-  case(cut):
-    years = 10;
-    break;
-  case(aboutToBeStabbed):
-    years = 50;
-    break;
-  case(guyConfrontingYou):
-    years  = 100;
-    break;
-  case(walkingAlong):
-      years = 500
-      break;
-  case(leftTheHouse):
-      years = 1000;
-      break;
-  case(gettingReady):
-      years = 5000;
-      break;
-  case(justWokeUp):
-      years = 10000;
-      break;
-  default:
-      years = 666;
-      break;
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGlnaGVzdHJvYWQiLCJhIjoiY2lzNjlpa3c3MGQ3cDJ6cDFzMXZpZTNmMCJ9.M1X4AOcuj4n3VT01ze0x5Q';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/highestroad/cj0zm4uy6000o2sq4i7vkjv0x',
+    zoom: 5.34,
+    center: [96.104715, 20.654468]
+});
+
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+
+function switchLayer(layer) {
+    var layerId = layer.target.id;
+    map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
 }
 
-function timer(){
-  console.log("Passed in data: " + data)
-  document.getElementById('timer').innerHTML =   years + ":" + months + ":" + days + ":" + hours + ":" + minutes + ":" + seconds;
-  seconds--;
-  console.log("")
-  console.log("A second has passed.");
-  /*if(seconds === 0 && years === 0 && months === 0 && days === 0 && hours === 0 && minutes === 0){
-    seconds = 0;
-    years = 0;
-    $(this).change(function(){
-      $('body').css("background-color" , 'rgb(255,255,255)');
-      $('#timer').hide();
-      $('#timer').delay(1000);
-      $('#timer').show();
-    });
-  }*/
-  if(seconds === 0 ){
-    minutes--;
-    console.log(minutes);
-    console.log("A minute has passed.");
-
-
-    seconds = 60;
-
-
-  }
-  if(minutes === 0){
-    hours--;
-    console.log(hours);
-    console.log("An hour has passed.");
-    minutes = 60;
-  }
-
-
-  if(hours === 0){
-    days--;
-    console.log(days);
-    console.log("A day has passed.")
-    hours = 24;
-  }
-  if(days === 0){
-    months--;
-    console.log(months);
-    console.log("A month has passed.");
-    days = 30;
-  }
-  if(months === 0 ){
-    years--;
-    console.log(years);
-    console.log("A year has passed.")
-    months = 12;
-  }
-
-
-};
+for (var i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
 </script>
-
-<!-- <script src="doomArticles.js"></script> -->
-<script>
-$("#doomBtn").click(articleSearch);
-
-function articleSearch(){
-  document.getElementById('watSon').innerHTML = "<p>Our danger level today is : " + data + " </p>";
-  document.getElementById('dataDivHead').innerHTML = "<br><p>Articles based on today's headlines:</p>";
-  document.getElementById('doomBtn').innerHTML = "Get More Articles";
-  document.getElementById('getADrink').innerHTML = "Yeah the world is ending. Grab a beer. <br>";
-  $("#hideDivBtn").toggleClass("hideDiv");
-  var searchRandom = ["deadly", "earthquake", "trump", "iranian", "president", "migrants", "muslim", "scottish", "myanmar", "wall", "supreme leader", "hong kong"]
-  var searchTerm = searchRandom[Math.floor(Math.random()*12)];
-  // searchTerm = $("#searchInput")[0].value; // this is with user input
-  if (!searchTerm) {
-    window.alert("No Search Query Detected");
-    return;
-  }
-
-  $.ajax({
-    url: 'https://en.wikipedia.org/w/api.php',
-    dataType: 'jsonp',
-    data: {
-      action: 'opensearch',
-      search: searchTerm,
-      limit: 10
-      },
-    success: function(data) {
-      $("#dataDiv").html('');
-      if(!data[1][0]){
-        $("#dataDiv").append('<div class="fadeInUp displayBox"><h2>' + 'No Data Returned' + ' </h2><p>' + 'Nothing related to this search term was found in the Wikipedia database. Please try a different search term.' + '</p></div></a>');
-      }
-
-      /* Troubleshooting
-      console.log(data); //
-      console.log(data[1][0]); //Title
-      console.log(data[2][0]); //Summary
-      console.log(data[3][0]); //Link */
-
-      // Creates information boxes with data
-      for (var i = 0; i < data[1].length; i++) {
-        $("#dataDiv").append('<a href="' + data[3][i] + '" target="_blank"><div class="fadeInUp well"><p style="color:black">' + data[1][i] + ' </p><p>' + data[2][i] + '</p></div></a>');
-        // changed class from displayBox to well with bootstrap import
-      }
-    }
-  });
-// end of search button function
-  };
-
-</script>
-
-<script>
-window.ButtonWebConfig = {
-  applicationId: 'app-2bfccb0184db6ac5'
-};
-(function(u,s,e,b,t,n){
-  u['__bttnio']=b;u[b]=u[b]||function(){(u[b].q=u[b].q||[]).push(arguments)};t=s.createElement(e);n=s.getElementsByTagName(e)[0];t.async=1;t.src='https://web.btncdn.com/v1/button.js';n.parentNode.insertBefore(t,n)
-})(window, document, 'script', 'bttnio');
-</script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
 
 </body>
-
-
-
 </html>
