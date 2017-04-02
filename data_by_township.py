@@ -8,7 +8,15 @@ import pandas as pd
 #===============================================================================
 def get_data():
 	'''
+		This function grabs data from multiple data sources to collect metadata
+		about townships in Myanmar and have it in one place.
 
+		NOTE: This function is path sensitive and requires the sourced data to be
+		downloaded first.
+
+		INPUT: N/A. Function should not be fed inputs.
+
+		OUTPUT: Pandas dataframe of the township data in Myanmar.
 	'''
 	# Township pcode location data
 	# Sourced via: 
@@ -25,7 +33,7 @@ def get_data():
 	cols = ['t_4', 't_5', 't_6', 't_24', 't_54', 't_66', 't_78']
 	town = pd.DataFrame(township_full[cols][2:].values)
 	town.columns = ['pcode_ts', 'township_name', 'pop_total', 'urban_perc',\
-	'literacy_perc_total', 'literacy_perc_urban', 'literacy_perc_rural']
+					'literacy_perc_total', 'literacy_perc_urban', 'literacy_perc_rural']
 
 	# Mean household size
 	# Sourced via: https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census
@@ -36,21 +44,25 @@ def get_data():
 
 	# Census data for light sources
 	# Sourced via: https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census
-	cols = ['pcode_ts', 'light_total', 'electricity', 'kerosene', 'candle', 'lbattery', 'generator', 'water', 'solar', 'other']
+	cols = ['pcode_ts', 'light_total', 'l_source_electricity', 'l_source_kerosene',\
+			'l_source_candle', 'l_source_lbattery', 'l_source_generator',\
+			'l_source_water', 'l_source_solar', 'l_source_other']
 	light_source_full = pd.read_csv('Censussourceoflighttsp.csv')
 	light_source = pd.DataFrame(light_source_full[cols].values)
 	light_source.columns = cols
 
 	# Census transportation data
 	# Sourced via: https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census
-	cols = ['pcode_ts', 'trans_t', 'trans_car', 'trans_mcyc', 'trans_bicyc', 'trans_4wheel', 'trans_canoe', 'trans_mboat', 'trans_cart']
+	cols = ['pcode_ts', 'trans_t', 'trans_car', 'trans_mcyc', 'trans_bicyc',\
+			'trans_4wheel', 'trans_canoe', 'trans_mboat', 'trans_cart']
 	transportation_full = pd.read_csv('Censustransportationtsp.csv')
 	transportation = pd.DataFrame(transportation_full[cols].values)
 	transportation.columns = cols
 
 	# Census home ownership data
 	# Sourced via: https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census
-	cols = ['pcode_ts', 'ownshp_t', 'ownshp_own', 'ownshp_rent', 'ownshp_free', 'ownshp_gov', 'ownshp_com', 'ownshp_oth']
+	cols = ['pcode_ts', 'ownshp_t', 'ownshp_own', 'ownshp_rent', 'ownshp_free',\
+			'ownshp_gov', 'ownshp_com', 'ownshp_oth']
 	home_ownership_full = pd.read_csv('Censusownershipofhousingtsp.csv')
 	home_ownership = pd.DataFrame(home_ownership_full[cols].values)
 	home_ownership.columns = cols
@@ -72,6 +84,15 @@ def get_data():
 	return df_all
 
 def get_info():
+	'''
+		This function provides information about the column values for the Myanmar township data.
+
+		INPUT: N/A. Function should not be fed inputs.
+
+		OUTPUT: Pandas dataframe of the column info.
+			KEY: column name
+			VALUES: datatype, summary of the column, link to the original data source
+	'''
 	info = {
 	'pcode_ts':             ['id', 'unique ids to denote specific townships in Myanmar', 'http://themimu.info/doc-type/census-baseline-data'],
 	'township_name':        ['general', 'name of the township', 'http://themimu.info/doc-type/census-baseline-data'],
@@ -80,7 +101,7 @@ def get_info():
 	'literacy_perc_total':  ['literacy', 'percentage of the township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
 	'literacy_perc_urban':  ['literacy', 'percentage of the urban township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
 	'literacy_perc_rural':  ['literacy', 'percentage of the rural township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
-	'mean_hhsize':          ['household', 'mean household size'],
+	'mean_hhsize':          ['household', 'mean household size', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
 	'hh_1':                 ['household', 'total households of 1 person', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
 	'hh_2':                 ['household', 'total households of 2 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
 	'hh_3':                 ['household', 'total households of 3 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
@@ -122,7 +143,7 @@ def get_info():
 	'com_comp':             ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
 	'com_int':              ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census']
 	}
-	return pd.DataFrame(info.values(), index=info.keys(), columns=['datatype', 'notes', 'source'])
+	return pd.DataFrame(info.values(), index=info.keys(), columns=['datatype', 'summary', 'source'])
 
 def main():
 	pass
