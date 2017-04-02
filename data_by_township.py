@@ -67,7 +67,7 @@ def get_data():
 	tables = [mean_hh, light_source, transportation, home_ownership, communication]
 	df_all = town.copy()
 	for df in tables:
-		df_all = pd.merge(df_all, on='pcode_ts')
+		df_all = pd.merge(df_all, df, on='pcode_ts')
 
 	return df_all
 
