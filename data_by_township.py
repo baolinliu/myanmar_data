@@ -7,6 +7,9 @@ import pandas as pd
 
 #===============================================================================
 def get_data():
+	'''
+
+	'''
 	# Township pcode location data
 	# Sourced via: 
 	pcodes_full = pd.read_csv('Myanmar PCodes Release-VIII_Aug2015 (Villages).csv')
@@ -53,7 +56,7 @@ def get_data():
 	home_ownership.columns = cols
 
 	# Census communication data
-	# Sourced via: 
+	# Sourced via: https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census
 	cols = ['pcode_ts', 'com_t', 'com_radio', 'com_tv', 'com_lline', 'com_mob', 'com_comp', 'com_int']
 	communication_full = pd.read_csv('Censuscommuniationtsp.csv')
 	communication_full[cols].head()
@@ -64,9 +67,62 @@ def get_data():
 	tables = [mean_hh, light_source, transportation, home_ownership, communication]
 	df_all = town.copy()
 	for df in tables:
-		df_all = pd.merge(df_all, df, how='left', on='pcode_ts')
+		df_all = pd.merge(df_all, on='pcode_ts')
 
 	return df_all
+
+def get_info():
+	info = {
+	'pcode_ts':             ['id', 'unique ids to denote specific townships in Myanmar', 'http://themimu.info/doc-type/census-baseline-data'],
+	'township_name':        ['general', 'name of the township', 'http://themimu.info/doc-type/census-baseline-data'],
+	'pop_total':            ['general', 'population total', 'http://themimu.info/doc-type/census-baseline-data'] ,
+	'urban_perc':           ['general', 'percentage of the township that is urban', 'http://themimu.info/doc-type/census-baseline-data'],
+	'literacy_perc_total':  ['literacy', 'percentage of the township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
+	'literacy_perc_urban':  ['literacy', 'percentage of the urban township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
+	'literacy_perc_rural':  ['literacy', 'percentage of the rural township that is literate', 'http://themimu.info/doc-type/census-baseline-data'],
+	'mean_hhsize':          ['household', 'mean household size'],
+	'hh_1':                 ['household', 'total households of 1 person', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_2':                 ['household', 'total households of 2 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_3':                 ['household', 'total households of 3 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_4':                 ['household', 'total households of 4 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_5':                 ['household', 'total households of 5 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_6':                 ['household', 'total households of 6 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_7':                 ['household', 'total households of 7 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_8':                 ['household', 'total households of 8 people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'hh_9':                 ['household', 'total households of 9+ people', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'light_total':          ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_electricity': ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_kerosene':    ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_candle':      ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_lbattery':    ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_generator':   ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_water':       ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_solar':       ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'l_source_other':       ['light sources', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_t':              ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_car':            ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_mcyc':           ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_bicyc':          ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_4wheel':         ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_canoe':          ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_mboat':          ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'trans_cart':           ['transportation', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_t':             ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_own':           ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_rent':          ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_free':          ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_gov':           ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_com':           ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'ownshp_oth':           ['home ownership', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_t':                ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_radio':            ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_tv':               ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_lline':            ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_mob':              ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_comp':             ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census'],
+	'com_int':              ['communication', '', 'https://data.opendevelopmentmekong.net/dataset/2014-myanmar-census']
+	}
+	return pd.DataFrame(info.values(), index=info.keys(), columns=['datatype', 'notes', 'source'])
 
 def main():
 	pass
